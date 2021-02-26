@@ -1,7 +1,11 @@
 $(document).ready(function(){
 
-  var Aturn = true;
+  let turn = "A";
+  let next_turn = "B"
+
+  //win disables the game if true
   var win = false;
+  //keep track of empty for draw condition
   var empty = 9;
   //initialize a board 2d array
   //var board = new Array(3).fill(0).map(() => new Array(3).fill(0));
@@ -14,19 +18,17 @@ $(document).ready(function(){
   $("td").click(function(){
     let id = $(this).attr('id')
     let invalid = false;
-    //determine turn
-    let turn = "A";
-    let next_turn = "B"
-    if(!Aturn){
-      turn = "B";
-      next_turn = "A"
-    }
+    
     //stops game if player wins
     if(!win){
+      //if valid square chosen
       if($("#"+id).attr("class") != "chosen"){
+
         $("#"+id+turn).removeClass();
         $("#"+id).addClass("chosen");
+        //set the matrix entry to their letter
         board[Math.floor(id / 3)][id % 3] = turn;
+        //one less square
         empty--;
         //check win condition
         let check = checkwin(empty);
@@ -40,19 +42,22 @@ $(document).ready(function(){
           return;
         }
       }else{
+        //they clicked on a full square, invalid move
         invalid = true;
       }
     
       //switch turns
       if(!invalid){
         $("#turn").html("It's now player "+next_turn+"'s turn!");
-        Aturn = !Aturn;
+        let temp = next_turn;
+        next_turn = turn;
+        turn = temp;
       }
     }
   });
 
 
-  function checkwin(){
+  function checkwin(empty){
     var win = 0;
     //check rows
     for(var i = 0; i < 3;i++){
@@ -71,6 +76,7 @@ $(document).ready(function(){
        board[0][2]==board[1][1]&& board[1][1]==board[2][0] ){
          win = 1;
     }
+    //check for draw
     if(empty == 0 && win == 0){
       win = -1;
     }
