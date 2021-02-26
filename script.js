@@ -33,11 +33,11 @@ $(document).ready(function(){
         //check win condition
         let check = checkwin(empty);
         if(check == 1){
-          $("#turn").html("Player "+turn+" Wins!");
+          $("#turn").html("Player "+turn+" Wins! (refresh to restart)");
           win = true;
           return;
         }else if(check == -1){
-          $("#turn").html("Draw!");
+          $("#turn").html("Draw! (refresh to restart)");
           win = true;
           return;
         }
